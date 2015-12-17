@@ -1,0 +1,82 @@
+// Kara Walla
+// 9/22/2015
+// This program reads in a name and gross income and calculates net pay
+// and deductions. It prints the results to an output file and a dialog box.
+
+import java.io.*; // Imports the classes in the java.io package
+import javax.swing.JOptionPane; // Imports the JOptionPane class to enable dialog boxes
+
+// Project class definition containing constants, I/O declaration, and main
+public class Project2
+{
+	final static double FED_TAX_RATE = 0.15; // Federal tax rate
+	final static double STATE_TAX_RATE = 0.035; // State tax rate
+	final static double SOC_SEC_TAX_RATE = 0.0575; // Social security tax rate
+	final static double MEDICARE_TAX_RATE = 0.0275; // Medicare/Medicaid tax rate
+	final static double PENSION_RATE = 0.05; // Percentage of income deducted for pension
+	final static double HEALTH_INSURANCE = 75; // Cost of health insurance
+	
+	// Main: variables, calculations, and input/output
+	public static void main(String[] args) throws FileNotFoundException
+	{
+		String name; // Employee name
+		String grossIncomeString; // Gross income from input dialog
+		String output; // Output string for dialog box
+		double grossIncome; // Gross income converted from string
+		double fedTax; // Amount paid in federal tax
+		double stateTax; // Amount paid in state tax
+		double socSec; // Amount paid in social security tax
+		double medicare; // Amount paid in medicare tax
+		double pension; // Amount paid towards pension
+		double healthInsurance; // Cost of health insurance
+		double netPay; // Remaining income
+		
+		PrintWriter outFile = new PrintWriter("prog.out"); // Output stream to output file
+		
+		// Read in name from dialog
+		name = JOptionPane.showInputDialog("Input your name: ");
+		
+		// Read in gross income from dialog
+		grossIncomeString = JOptionPane.showInputDialog("Enter your gross monthly income: ");
+		
+		// Convert income to double
+		grossIncome = Double.parseDouble(grossIncomeString);
+		
+		fedTax = grossIncome * FED_TAX_RATE; // Calculate federal tax paid
+		stateTax = grossIncome * STATE_TAX_RATE; // Calculate state tax paid
+		socSec = grossIncome * SOC_SEC_TAX_RATE; // Calculate social security tax paid
+		medicare = grossIncome * MEDICARE_TAX_RATE; // Calculate medicare tax paid
+		pension = grossIncome * PENSION_RATE; // Calculate pension paid
+		healthInsurance = HEALTH_INSURANCE; // Get health insurance from contstant
+		netPay = grossIncome - fedTax - stateTax - socSec - medicare - pension - healthInsurance; // Calculate remaining pay after deductions
+		
+		// Format results of calculations in a string
+		output = String.format(name + "%n")
+				+ String.format("%-23s $ %8.2f %n", "Gross Income: ", grossIncome)
+				+ String.format("%-23s $ %8.2f %n", "Federal Tax:", fedTax)
+				+ String.format("%-23s $ %8.2f %n", "State Tax:", stateTax)
+				+ String.format("%-23s $ %8.2f %n", "Social Security Tax:", socSec)
+				+ String.format("%-23s $ %8.2f %n", "Medicare/Medicaid Tax:", medicare)
+				+ String.format("%-23s $ %8.2f %n", "Pension Plan:", pension)
+				+ String.format("%-23s $ %8.2f %n", "Health Insurance:", healthInsurance)
+				+ String.format("%-23s $ %8.2f %n", "Net Pay:", netPay);
+		
+		// Output string to message dialog
+		JOptionPane.showMessageDialog(null, output, "Results", JOptionPane.INFORMATION_MESSAGE);
+		
+		outFile.printf(name); // Print name to output file
+		outFile.println(); // Print new line
+		outFile.printf("%-23s $ %8.2f %n", "Gross Amount:", grossIncome); // Format/print gross income
+		outFile.printf("%-23s $ %8.2f %n", "Federal Tax:", fedTax); // Format/print federal tax
+		outFile.printf("%-23s $ %8.2f %n", "State Tax:", stateTax); // Format/print state tax
+		outFile.printf("%-23s $ %8.2f %n", "Social Security Tax:", socSec); // Format/print social security
+		outFile.printf("%-23s $ %8.2f %n", "Medicare/Medicaid Tax:", medicare); // Format/print medicare
+		outFile.printf("%-23s $ %8.2f %n", "Pension Plan:", pension); // Format/print pension
+		outFile.printf("%-23s $ %8.2f %n", "Health Insurance:", healthInsurance); // Format/print health insurance
+		outFile.printf("%-23s $ %8.2f %n", "Net Pay:", netPay); // Format/print net pay
+		
+		outFile.close(); // Close output stream to output file
+		System.exit(0); // Exit system because of dialog boxes
+	}
+}
+
