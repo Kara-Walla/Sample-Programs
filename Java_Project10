@@ -1,0 +1,78 @@
+
+// Kara Walla
+// 12/8/2015
+// This program draws a series of rectangles or ovals
+// in an applet with characteristics selected by the
+// user.
+
+import java.awt.*;	 // Graphics
+import java.util.*;	 // Scanner and exceptions
+import javax.swing.*; // Applet
+
+// Project class definition containing
+// variables and I/O declaration.
+public class Project10 extends JApplet
+{
+	// Characteristics of shape: type, repetition, color
+	int figChoice, repChoice, colorChoice;
+
+	static Scanner console = new Scanner(System.in); // Scanner object
+		
+	// User input and exception handling
+	public void init()
+	{
+		boolean done = false; // User input successful with no errors
+		String error; // Use in case of input mismatch
+		
+		do    // Continue until user input is successful
+		{
+			try		// Continue unless exception
+			{
+				System.out.println("Select a figure type (1 for oval or "
+					+ "2 for rectangle): "); // Prompt for figure type
+				figChoice = console.nextInt(); // Set figure type to user choice
+			
+				System.out.println("Select a number of "
+					+ "figure repetitions: "); // Prompt for figure repetition
+				repChoice = console.nextInt(); // Set repetition to user choice
+			
+				System.out.println("Select a color (1 for red, 2 for green, or "
+					+ "3 for blue): "); // Prompt for figure color
+				colorChoice = console.nextInt(); // Set color to user choice
+				
+				done = true; // User input is complete without exception
+			}
+			catch (InputMismatchException imeRef) // User input not integer
+			{
+				System.out.println("Please enter an integer."); // Error message
+				error = console.next(); // Clear input stream
+			}
+		} while (!done); // Try again if exception
+	}
+	
+	// Draw figures
+	public void paint(Graphics g)
+	{
+		if (colorChoice == 1) // If red user choice
+			g.setColor(new Color(255, 0, 0)); // Set to red
+		else if (colorChoice == 2) // If green user choice
+			g.setColor(new Color(0, 255, 0)); // Set to green
+		else if (colorChoice == 3) // If blue user choice
+			g.setColor(new Color(0, 0, 255)); // Set to blue
+		
+		if (figChoice == 1) // If user chose ovals
+		{
+			// Draw shape for selected repetitions
+			for(int i = 0; i < repChoice; ++i)      
+				g.drawOval(10 + i * 4, 10 + i * 4, 
+						30 + i * 2, 10 + i * 2); // Draw ovals
+		}
+		else if (figChoice == 2) // If user chose rectangles
+		{
+			// Draw shape for selected repetitions
+			for(int i = 0; i < repChoice; ++i)      
+				g.drawRect(10 + i * 4, 10 + i * 4,
+						30 + i * 2, 10 + i * 2); // Draw rectangles
+		}	
+	}
+}
