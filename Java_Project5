@@ -1,0 +1,151 @@
+// Kara Walla
+// 10/14/15
+// Weighted grade calculator that accepts four test scores and weights. 
+// Calculates and prints final grade, all through a GUI window.
+
+import javax.swing.*;    // Dialog boxes
+import java.awt.*;		// Container
+import java.awt.event.*; // Action listener
+
+// Project class definition containing 
+// constants, I/O declaration, and main.
+// Inherits public methods of JFrame.
+public class Project5 extends JFrame
+{
+	// Labels for panes in window
+	private JLabel scoreL, weightL, gradeL, blank1L, 
+				blank2L, blank3L, test1L, test2L, test3L, test4L;
+	
+	// Text fields for input in window
+	private JTextField score1F, score2F, score3F, score4F, 
+				weight1F, weight2F, weight3F, weight4F, gradeF;
+	
+	private JButton calculateB, exitB; // Calculate and exit buttons
+	private CalculateButtonHandler cbHandler; // Calculate button handler
+	private ExitButtonHandler ebHandler; // Exit button handler
+	private static final int WIDTH = 600; // Width of window
+	private static final int HEIGHT = 400; // Height of window
+	
+	// Project 5 defines all labels and sets up the program window
+	public Project5()
+	{
+		// Defines labels with strings and text alignment
+		scoreL = new JLabel("Enter the score: ",
+				SwingConstants.LEFT);
+		weightL = new JLabel("Enter the weight: ",
+				SwingConstants.LEFT);
+		gradeL = new JLabel("The final grade is: ",
+				SwingConstants.RIGHT);
+		test1L = new JLabel("Test 1: ",
+				SwingConstants.RIGHT);
+		test2L = new JLabel("Test 2: ",
+				SwingConstants.RIGHT);
+		test3L = new JLabel("Test 3: ",
+				SwingConstants.RIGHT);
+		test4L = new JLabel("Test 4: ",
+				SwingConstants.RIGHT);
+		blank1L = new JLabel();
+		blank2L = new JLabel();
+		blank3L = new JLabel();
+		
+		// Create text fields
+		score1F = new JTextField(10);
+		score2F = new JTextField(10);
+		score3F = new JTextField(10);
+		score4F = new JTextField(10);
+		weight1F = new JTextField(10);
+		weight2F = new JTextField(10);
+		weight3F = new JTextField(10);
+		weight4F = new JTextField(10);
+		gradeF = new JTextField(10);
+		
+		// Create calculate button
+		calculateB = new JButton("Calculate");
+		cbHandler = new CalculateButtonHandler();
+		calculateB.addActionListener(cbHandler);
+		
+		// Create exit button
+		exitB = new JButton("Exit");
+		ebHandler = new ExitButtonHandler();
+		exitB.addActionListener(ebHandler);
+		
+		// Set the title of the window
+		setTitle("Weighted Grade Calculator");
+		
+		Container pane = getContentPane(); // Get the container
+		pane.setLayout(new GridLayout(7, 3));  // Set the layout
+		
+		// Place the components in the pane
+		pane.add(blank1L);
+		pane.add(scoreL);
+		pane.add(weightL);
+		pane.add(test1L);
+		pane.add(score1F);
+		pane.add(weight1F);
+		pane.add(test2L);
+		pane.add(score2F);
+		pane.add(weight2F);
+		pane.add(test3L);
+		pane.add(score3F);
+		pane.add(weight3F);
+		pane.add(test4L);
+		pane.add(score4F);
+		pane.add(weight4F);
+		pane.add(gradeL);
+		pane.add(gradeF);
+		pane.add(blank2L);
+		pane.add(calculateB);
+		pane.add(blank3L);
+		pane.add(exitB);
+
+		setSize(WIDTH, HEIGHT); // Set size of window
+		setVisible(true); // Display window
+		setDefaultCloseOperation(EXIT_ON_CLOSE); // Set close operation
+	}
+	
+	// Action listener for calculate button
+	private class CalculateButtonHandler implements ActionListener
+	{
+		// Calculates grade when calculate button is clicked
+		public void actionPerformed(ActionEvent e)
+		{
+			// Doubles for scores, weights, and grade
+			double score1V, score2V, score3V, score4V, weight1V, 
+						weight2V, weight3V, weight4V, gradeV;
+			
+			// Get scores and weight from text fields
+			score1V = Double.parseDouble(score1F.getText());
+			score2V = Double.parseDouble(score2F.getText());
+			score3V = Double.parseDouble(score3F.getText());
+			score4V = Double.parseDouble(score4F.getText());
+			weight1V = Double.parseDouble(weight1F.getText());
+			weight2V = Double.parseDouble(weight2F.getText());
+			weight3V = Double.parseDouble(weight3F.getText());
+			weight4V = Double.parseDouble(weight4F.getText());
+			
+			gradeV = (score1V * weight1V + score2V * weight2V + score3V * weight3V 
+							+ score4V * weight4V); // Calculate grade
+			gradeF.setText("" + gradeV); // Display grade in grade field
+		}
+	}
+	
+	// Action listener for exit button
+	private class ExitButtonHandler implements ActionListener
+	{
+		// Exit program when exit button is clicked
+		public void actionPerformed(ActionEvent e)
+		{
+			System.exit(0); // Exit program
+		}
+	}
+	
+	// Create program window
+	public static void main(String[] args)
+	{
+		// Create object weightedGradeCalc of type Project5
+		// and open window
+		Project5 weightedGradeCalc = new Project5();
+	}
+}
+
+
