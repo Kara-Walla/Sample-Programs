@@ -1,0 +1,69 @@
+// Kara Walla
+// 9/17/2015
+// This program reads in the pay rate and hours worked and calculates net income, gross income, 
+// and several other budget items from constant percentages. It outputs the results.
+
+
+import java.util.*; 	// Imports the classes in the java.util package
+
+// Project class definition containing constants, I/O declaration, and main
+public class Project1 
+{
+	static Scanner console = new Scanner(System.in); 	// Declare input stream
+	
+	final static double TAX_RATE = 0.14; 				// Percentage used to calculate taxes paid on income
+	final static double CLOTHES = 0.1; 					// Percentage used to calculate cost of clothing
+	final static double SUPPLIES = 0.01; 				// Percentage used to calculate cost of supplies
+	final static double SAVINGS_BOND = 0.25; 			// Percentage used to calculate amount of money contributed to savings bond
+	final static double PARENT_AMOUNT = 0.5; 			// Percentage used to calculate parents' contribution to savings bond
+	
+	// Main: contains body of program, including variables, calculations, and input/output
+	public static void main(String[] args) 
+	{
+		double payRate; 		// Dollars earned per hour
+		double weeklyHours;		// Hours worked per week
+		double totalHours; 		// Total number of hours worked
+		double grossIncome; 	// Total amount of income
+		double netIncome; 		// Income after taxes
+		double clothesCost; 	// Money spent on clothing
+		double suppliesCost; 	// Money spent on school supplies
+		double mySavings; 		// Money invested in savings bond
+		double parentSavings; 	// Parental contribution to savings bond
+		double surplus; 		// Money left over after expenses
+		int count = 0; 			// Counter for loop
+		
+		System.out.println("What is the weekly pay rate?"); // Output pay rate query to user
+		payRate = console.nextDouble(); 					// Read in pay rate from input and store in payRate
+		totalHours = 0.0; 									// Set hours worked to 0
+		
+		// Loops through all five work weeks, reading in the weekly work hours and adding them to totalHours
+		while (count < 5)
+		{
+			++count; 							// Increment counter
+			System.out.println("Enter the hours worked for week " 
+					+ count + ":"); 			// Print message, concatenate the week number
+			weeklyHours = console.nextDouble(); // Read in the weekly work hours from input stream
+			totalHours += weeklyHours; 			// Add week hours to total hours
+			System.out.println(); 				// New line
+		}
+		
+		grossIncome = payRate * totalHours; 				// Calculate gross income
+		netIncome = grossIncome - (grossIncome * TAX_RATE); // Calculate net income
+		clothesCost = netIncome * CLOTHES; 					// Calculate clothing expenses
+		suppliesCost = netIncome * SUPPLIES; 				// Calculate school supply expenses
+		mySavings = (netIncome - clothesCost - suppliesCost) 
+				* SAVINGS_BOND; 							// Calculate amount saved in savings bond
+		parentSavings = mySavings * PARENT_AMOUNT; 			// Calculate parents' contribution to savings bond
+		surplus = netIncome - 
+				(clothesCost + suppliesCost + mySavings); 	// Calculate surplus money
+		
+		System.out.printf("Total income before tax: $%.2f \n", grossIncome); 		// Print gross income
+		System.out.printf("Net income after tax: $%.2f \n", netIncome); 			// Print net income
+		System.out.printf("Amount spent on clothes, etc.: $%.2f \n", clothesCost); 	// Print clothing expenses
+		System.out.printf("Amount spent on school supplies: $%.2f \n", suppliesCost); // Print school supply expenses
+		System.out.printf("Amount put into savings bonds: $%.2f \n", mySavings); 	// Print amount saved in savings bond
+		System.out.printf("Amount contributed by parents for savings bonds: $%.2f \n",
+				parentSavings); 		// Print parents' contribution to savings bond
+		System.out.printf("Amount of net income remaining: $%.2f \n", surplus); 	// Print surplus income
+	}
+
