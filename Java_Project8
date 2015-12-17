@@ -1,0 +1,159 @@
+// Kara Walla
+// 11/16/2015
+// This program reads in high and low temperatures for each month 
+// of the year into a two-dimensional array. It then finds average
+// high temperature, average low temperature, highest temperature,
+// and lowest temperature, and prints results to screen and to an
+// output file.
+
+import java.io.FileNotFoundException; // Imports FileNotFoundException
+import java.io.PrintWriter;			 // Imports Print Writer
+import java.util.Scanner;			 // Imports Scanner
+
+// Project class definition containing I/O declaration, constants, main,
+// and methods
+public class Project8 
+{
+	
+	static Scanner console = new Scanner(System.in); // Declare input stream
+	
+	static final int ROWS = 12; // Months
+	static final int COLUMNS = 2; // High temp in column 0, low temp in column 1
+
+	// Initializes array, calls methods, outputs to screen and file
+	public static void main(String[] args) throws FileNotFoundException 
+	{
+		int[][] matrix = new int[ROWS][COLUMNS]; // Initialize two-dimensional array
+		
+		PrintWriter outFile = new PrintWriter
+				("output.out"); // Output stream for output file
+		
+		getData(matrix); // Read and store data in matrix
+		
+		// For each month CHECK THIS TO MAKE SURE NOTHING ELSE IS NEEDED
+//		for (int row = 0; row < matrix.length; row++)
+//		{
+//			// For each temperature (high and low)
+//			for (int col = 0; col < matrix[row].length; col++)
+//					System.out.printf("%7d", matrix[row][col]); // Print temperature
+//			System.out.println(); // New line
+//		}
+		
+		// Print each month with high and low temperatures to file
+		outFile.printf("%-13s %6s %6s %n", "Month", "High", "Low");
+		outFile.printf("%-13s %6d %6d %n", "January", matrix[0][0], matrix[0][1]);
+		outFile.printf("%-13s %6d %6d %n", "February", matrix[1][0], matrix[1][1]);
+		outFile.printf("%-13s %6d %6d %n", "March", matrix[2][0], matrix[2][1]);
+		outFile.printf("%-13s %6d %6d %n", "April", matrix[3][0], matrix[3][1]);
+		outFile.printf("%-13s %6d %6d %n", "May", matrix[4][0], matrix[4][1]);
+		outFile.printf("%-13s %6d %6d %n", "June", matrix[5][0], matrix[5][1]);
+		outFile.printf("%-13s %6d %6d %n", "July", matrix[6][0], matrix[6][1]);
+		outFile.printf("%-13s %6d %6d %n", "August", matrix[7][0], matrix[7][1]);
+		outFile.printf("%-13s %6d %6d %n", "September", matrix[8][0], matrix[8][1]);
+		outFile.printf("%-13s %6d %6d %n", "October", matrix[9][0], matrix[9][1]);
+		outFile.printf("%-13s %6d %6d %n", "November", matrix[10][0], matrix[10][1]);
+		outFile.printf("%-13s %6d %6d %n", "December", matrix[11][0], matrix[11][1]);
+		
+		// Print average high, average low, high temp, and low temp to screen and file
+		System.out.println("Average high: " + averageHigh(matrix));
+		outFile.println("Average high: " + averageHigh(matrix));
+		System.out.println("Average low: " + averageLow(matrix));
+		outFile.println("Average low: " + averageLow(matrix));
+		System.out.println("Highest temperature: " + matrix[indexHighTemp(matrix)][0]);
+		outFile.println("Highest temperature: " + matrix[indexHighTemp(matrix)][0]);
+		System.out.println("Lowest temperature: " + matrix[indexLowTemp(matrix)][1]);
+		outFile.println("Lowest temperature: " + matrix[indexLowTemp(matrix)][1]);
+		
+		outFile.close(); // Close output file
+	}
+	
+	// Read in temperature data and store in two-dimensional array
+	public static void getData(int[][] matrix)
+	{
+		// For each month
+		for (int row = 0; row < ROWS; row++)
+		{
+			System.out.println("For month #" + (row + 1) + ":"); // Prompt for month
+			// For each temperature (high and low)
+			for (int col = 0; col < COLUMNS; col++)
+			{
+				// If high temperature
+				if (col == 0)
+					System.out.println("Enter high temperature: "); // Prompt for high
+				// If low temperature
+				else
+					System.out.println("Enter low temperature: "); // Prompt for low
+				matrix[row][col] = console.nextInt(); // Store temperature in array
+			}
+		}
+	}
+	
+	// Return average high temperature from array
+	public static int averageHigh(int[][] matrix)
+	{
+		int averageH; // Average high temperature
+		int sum = 0; // Sum of high temperatures
+		
+		// For each month
+		for (int row = 0; row < matrix.length; row++)
+				sum = sum + matrix[row][0]; // Sum high temperatures
+		
+		averageH = sum/ROWS; // Calculate average
+		
+		return averageH; // Return average
+	}
+	
+	// Return average low temperature from array
+	public static int averageLow(int[][] matrix)
+	{
+		int averageL; // Average low temperature
+		int sum = 0; // Sum of low temperatures
+		
+		// For each month
+		for (int row = 0; row < matrix.length; row++)
+				sum = sum + matrix[row][1]; // Sum low temperatures
+		
+		averageL = sum/ROWS; // Calculate average
+		
+		return averageL; // Return average
+	}
+	
+	// Return row index of highest temperature in array
+	public static int indexHighTemp (int[][] matrix)
+	{
+		int indexH = 0; // Index of highest temperature
+		int highest = matrix[0][0]; // Assume that the first element of the
+								   // high column is the largest
+		
+		// For each month
+		for (int row = 0; row < matrix.length; row++)
+			// If temperature is higher than current highest
+			if (highest < matrix[row][0])
+			{
+				highest = matrix[row][0]; // Get new highest
+				indexH = row; // Get new index
+			}
+		
+		return indexH; // Return row index of highest temp
+	}
+	
+	// Return row index of lowest temperature in array
+	public static int indexLowTemp (int[][] matrix)
+	{
+		int indexL = 0; // Index of lowest temperature
+		int lowest = matrix[0][1]; // Assume that the first element of the
+								  // low column is the smallest
+		
+		// For each month
+		for (int row = 0; row < matrix.length; row++)
+			// If temperature is lower than current lowest
+			if (lowest > matrix[row][1])
+			{
+				lowest = matrix[row][1]; // Get new lowest
+				indexL = row; // Get new index
+			}
+		
+		return indexL; // Return row index of lowest temp
+	}
+}
+
