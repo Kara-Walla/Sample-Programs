@@ -1,0 +1,105 @@
+// Kara Walla
+// 9/29/2015
+// This program reads in bank account data from the console and 
+// outputs new balance after interest or fees.
+
+
+import java.io.FileNotFoundException; // Imports FileNotFoundException
+import java.util.*; 				 // Imports the classes in the java.util package
+
+// Project class definition containing constants, I/O declaration, and main
+public class Project3 
+{
+	static Scanner console = new Scanner(System.in); 	// Declare input stream
+	
+	final static double SAVINGS_FEE = 10.00; // Savings account service fee
+	final static double SAVINGS_INT_RATE 
+								= 0.04/12; // Savings account interest rate 
+										  // (converted from annual to monthly)
+	final static double CHECKING_FEE = 25.00; // Checking account service fee
+	final static double LOW_CHECKING_INT_RATE 
+								= 0.05/12; // Low checking account interest rate
+										  // (converted from annual to monthly)
+	final static double HIGH_CHECKING_INT_RATE 
+								= 0.03/12; // High checking account interest rate
+										  // (converted from annual to monthly)
+	final static double CHECKING_BOUNDARY 
+								= 5000.00; // Determines whether checking 
+										  // account is high or low
+	
+	// Main: variables, calculations, and input/output
+	public static void main(String[] args) throws FileNotFoundException
+	{
+		char accountType;		// Account type: 'c' for checking or 's' for savings
+		int accountNum; 		// Account number
+		double minBalance;		// Minimum balance to avoid service fee
+		double startBalance;	// Current balance in the account
+		double newBalance = 0;  // Balance after interest or fees
+		
+		System.out.println("What is the "
+				+ "account number?"); // Print account number request
+		accountNum = console.nextInt();	// Read in account number from input
+		
+		System.out.println("What is the account type?"); // Print account type request
+		accountType = console.next().charAt(0);	// Read in account type character
+		
+		System.out.println("What is the "
+				+ "minimum balance?"); // Print minimum balance request
+		minBalance = console.nextDouble();	// Read in minimum balance
+		
+		System.out.println("What is the "
+				+ "current balance?"); // Print current balance request
+		startBalance = console.nextDouble(); // Read in current balance
+		
+		System.out.println("Account number: " + accountNum); // Print account number
+		System.out.println("Account type: " + accountType);  // Print account type
+		System.out.printf("Minimum balance: $%.2f %n", 
+				minBalance);   								// Print minimum balance
+		System.out.printf("Current balance: $%.2f %n", 
+				startBalance); 								// Print current balance
+		
+		// If checking account
+		if (accountType == 'c' || accountType == 'C')
+		{
+			// If starting balance is beneath minimum balance
+			if (startBalance < minBalance)
+				newBalance = startBalance 
+							- CHECKING_FEE; // Charge checking service fee
+			// If starting balance is above minimum balance
+			else
+			{
+				// If starting balance is high checking balance
+				if (startBalance - minBalance > CHECKING_BOUNDARY)
+					newBalance = startBalance + startBalance 
+						* HIGH_CHECKING_INT_RATE; // Add interest at high account rate
+				// If starting balance is low checking balance
+				else
+					newBalance = startBalance + startBalance 
+						* LOW_CHECKING_INT_RATE; // Add interest at low account rate
+			}
+		}
+		// If savings account
+		else if (accountType == 's' || accountType == 'S')
+		{
+			// If starting balance is beneath minimum balance
+			if (startBalance < minBalance)
+				newBalance = startBalance - SAVINGS_FEE; // Charge savings service fee
+			// If starting balance is above minimum balance
+			else
+				newBalance = startBalance + startBalance 
+					* SAVINGS_INT_RATE; // Add interest
+		}
+		// If account type is not valid
+		else
+		{
+			System.out.println("Invalid account type. Please enter 'c' "
+					+ "for checking or 's' for savings."); // Print error message
+			System.exit(0);								  // Exit program
+		}
+			
+		System.out.printf("The new balance is: $%.2f", 
+				newBalance); 							  // Print new balance
+
+	}
+
+}
