@@ -1,0 +1,112 @@
+// Kara Walla
+// 10/6/2015
+// Program reads in bank account data from an input file and calculates new balance after
+// interest or fees. It prints the results to an output file.
+// Source file name is "Project4"
+
+import java.io.FileNotFoundException; // Imports FileNotFoundException
+import java.io.FileReader;			 // Imports FileReader
+import java.io.PrintWriter;			 // Imports Print Writer
+import java.util.*; 				 // Imports the classes in the java.util package
+
+// Project class definition containing constants, I/O declaration, and main
+public class Project4 
+{	
+	final static double SAVINGS_FEE = 10.00; // Savings account service fee
+	final static double SAVINGS_INT_RATE	// Savings account interest rate
+					= 0.04/12; 				// (converted from annual to monthly)
+	final static double CHECKING_FEE = 25.00; // Checking account service fee
+	final static double LOW_CHECKING_INT_RATE // Low checking account interest rate
+					= 0.03/12; 				 // (converted from annual to monthly)
+	final static double HIGH_CHECKING_INT_RATE // High checking account interest rate
+					= 0.05/12; 				  // (converted from annual to monthly)
+	final static double CHECKING_BOUNDARY 	  // Determines whether checking
+					= 5000.00;				  // account is high or low
+	
+	// Main: variables, calculations, and input/output
+	public static void main(String[] args) throws FileNotFoundException
+	{
+		char accountType;		// Account type: 'c' for checking or 's' for savings
+		int accountNum; 		// Account number
+		double minBalance;		// Minimum balance to avoid service fee
+		double startBalance;	// Current balance in the account
+		double newBalance = 0;	// Balance after interest or fees
+		
+		Scanner inFile = new Scanner
+				(new FileReader("prog.dat")); // Creates scanner for input file
+		PrintWriter outFile = new PrintWriter
+				("output.out");				 // Output stream for output file
+		
+		// While end of input file has not been reached
+		while (inFile.hasNext())
+		{
+			accountNum = inFile.nextInt();		// Read in account number from file
+			accountType = 
+				inFile.next().charAt(0); // Read in account type character from file
+			minBalance = inFile.nextDouble();	// Read in minimum balance from file
+			startBalance = inFile.nextDouble();	// Read in current balance from file
+		
+			outFile.println("Account number: " 
+							+ accountNum);  // Print account number to output file
+			outFile.println("Account type: " 
+							+ accountType); // Print account type to output file
+			outFile.printf("Minimum balance: $%.2f %n",
+					minBalance); 			// Print minimum balance to output file
+			outFile.printf("Current balance: $%.2f %n", 
+					startBalance);			// Print current balance to output file
+		
+			// If checking account
+			if (accountType == 'c' || accountType == 'C')
+			{
+				// If starting balance is beneath minimum balance
+				if (startBalance < minBalance)
+					newBalance = startBalance 
+							- CHECKING_FEE; // Charge checking service fee
+				// If starting balance is above minimum balance
+				else
+				{
+					// If starting balance is high checking balance
+					if (startBalance - minBalance > CHECKING_BOUNDARY)
+						newBalance = startBalance + startBalance
+							* HIGH_CHECKING_INT_RATE; // Add interest at high account rate
+					// If starting balance is low checking balance
+					else
+						newBalance = startBalance + startBalance 
+							* LOW_CHECKING_INT_RATE; // Add interest at low account rate
+				}
+			}
+			// If savings account
+			else if (accountType == 's' || accountType == 'S')
+			{
+				// If starting balance is beneath minimum balance
+				if (startBalance < minBalance)
+					newBalance = startBalance 
+								- SAVINGS_FEE; // Charge savings service fee
+				// If starting balance is above minimum balance
+				else
+					newBalance = startBalance + startBalance 
+							* SAVINGS_INT_RATE; // Add interest
+			}
+			// If account type is not valid
+			else
+			{
+				outFile.println("Error: account type must be represented"
+						+ "by a 'c' (checking) or 's' (savings)."); // Print error message
+			}
+			
+			outFile.printf("The new balance is: $%.2f",
+					newBalance); // Print new balance
+			outFile.println();	// New line
+			outFile.println();	// New line
+			outFile.println();   // New line
+		}
+		
+		inFile.close(); 	// Close input file
+		outFile.close();	// Close output file
+		
+		System.out.println("Processing complete. Results can be "
+				+ "found in file output.out"); // Print completion message to screen
+	}
+
+}
+
