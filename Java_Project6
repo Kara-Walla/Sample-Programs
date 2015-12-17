@@ -1,0 +1,131 @@
+// Kara Walla
+// 10/27/2015
+// This program prints the first 100 emirps, or primes that are also primes when their
+// digits are reversed. Afterwards, the user may enter an integer and the program
+// will determine if the integer is prime, and, if so, whether it is an emirp.
+	
+import java.io.FileNotFoundException; // Imports FileNotFoundException
+import java.io.PrintWriter;			 // Imports Print Writer
+import java.util.*;					 // Imports the classes in the java.util package
+
+// Project class definition containing I/O declaration and main
+public class Project6
+{	
+	static Scanner console = new Scanner(System.in); 	// Declare input stream
+	
+	// Main: contains body of program, including variables, calculations, and input/output
+	public static void main(String[] args) throws FileNotFoundException
+	{
+		int emirpCount = 0; // How many emirps have been found
+		int num = 0; // Number to be tested for emirps in initial 100 emirps
+		int input; // Number to be tested for prime and emirp; also priming read
+		int absolute; // Absolute value of input
+		
+		PrintWriter outFile = new PrintWriter
+				("output.out");				 // Output stream for output file
+		
+		// While fewer than 100 emirps have been found
+		while (emirpCount < 100)
+		{
+			// If number is prime
+			if (isPrime(num))
+			{
+				// If number is an emirp
+				if (isPrime(reverse(num)))
+				{
+					// This if statement adds a line break for every
+					// ten emirps printed to screen and to file.
+					if (emirpCount % 10 == 0 && emirpCount != 0)
+					{
+						System.out.println(); // New line to console
+						outFile.println(); // New line to file
+					}
+					
+					System.out.printf("%-7d ", num); // Print emirp to console
+					outFile.printf("%-7d ", num); // Print emirp to file
+					emirpCount++; // Increment number of emirps found
+				}
+			}
+			num++; // Increment number to be tested
+		}
+		
+		outFile.close(); // Close output file
+		
+		System.out.println("\n\n" + "Please enter an integer to be tested, or enter '0' "
+				+ "to quit."); // Print request to enter new integer to be tested or exit
+		input = console.nextInt(); // Priming read; initializes input to be tested
+		
+		// While user does not want to quit
+		while (input != 0)
+		{
+			absolute = Math.abs(input); // Get absolute value of input (negative numbers aren't prime)
+			
+			// If absolute value is prime
+			if (isPrime(absolute))
+			{
+				System.out.println(absolute + " is prime."); // Print prime status
+				
+				// If absolute value is an emirp
+				if (isPrime(reverse(absolute)))
+					System.out.println(absolute + " is an emirp."); // Print emirp status
+				else
+					System.out.println(absolute + " is not an emirp."); // Print emirp status
+			}
+			// If absolute value is not prime
+			else
+				System.out.println(absolute + " is not prime."); // Print prime status
+			
+			System.out.println("Please enter an integer to be tested, or enter '0' "
+					+ "to quit."); // Print request to enter new integer to be tested or exit
+			input = console.nextInt(); // Get next integer
+		}
+	}
+	
+	// Method returns the entered integer with its digits reversed in order
+	public static int reverse (int original)
+	{
+		int reverseNum = 0; // Reversed integer
+		
+		// While original number has not been reversed completely
+		while (original > 0)
+		{
+			reverseNum = (reverseNum * 10) + (original % 10); // Calculate part of reverse	
+			original = original / 10; // Remove reversed portion from original
+		}
+		
+		return reverseNum; // Return reversed integer
+	}
+	
+	// Method determines if entered number is prime
+	public static boolean isPrime(int candidate)
+	{
+		int root = (int) Math.sqrt(candidate); // Root of prime candidate
+		int divisor = 2; // Beginning divisor for prime test
+		
+		// If candidate is greater than two (the only even prime)
+		if (candidate > 2)
+		{
+			// While the divisor is less than the root of the candidate
+			while (divisor <= root)
+			{
+				// If divisor leaves no remainder
+				if (candidate % divisor == 0) 
+					return false; // Candidate is not prime
+				// If divisor leaves a remainder
+				else
+					++divisor; // Increment to new divisor
+			}
+			return true; // If no divisor is found, candidate is prime
+		}
+		// If candidate is equal to or less than two
+		else
+		{
+			// If candidate is equal to two
+			if (candidate == 2)
+				return true; // Two is prime
+			// If candidate is not equal to two
+			else
+				return false; // One, zero, and negative integers are not prime
+		}
+	}
+}
