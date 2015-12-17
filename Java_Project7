@@ -1,0 +1,213 @@
+// Kara Walla
+// 11/5/15
+// Converts Roman numeral string into a decimal number.
+
+import java.util.Scanner; // Import scanner class
+
+// Project class definition containing 
+// constants, I/O declaration, and main.
+public class Project7
+{
+	static Scanner console = new Scanner(System.in); // Declare scanner object
+	
+        // Main: contains body of program, including
+        // main program loop and user input
+	public static void main(String[] args)
+	{
+		Roman rom = new Roman(); // Object instantiation for class Roman
+		String romanString; // Contains user-entered Roman numeral
+		char choice; // User choice to continue
+		
+		System.out.println("Do you want to convert a Roman numeral? "
+               + "Enter y for yes or n for no: "); // Prompt for user choice
+		choice = console.next().charAt(0); // Store user choice in choice variable
+
+                // While user wants to continue
+		while (choice == 'y' || choice == 'Y')
+		{
+			romanString = console.nextLine(); // romanString emptied
+
+			System.out.print("Enter Roman numeral: "); // Prompt for Roman numeral
+			romanString = console.nextLine(); // romanString gets entered Roman numeral
+			System.out.println(); // New line
+
+			rom.setRoman(romanString); // Roman object set to input Roman numeral
+
+			System.out.println("The decimal equivalent of Roman numeral " 
+                       + romanString + " is "); // Print initial Roman numeral
+			rom.printDecimal(); // Print equivalent decimal
+			System.out.println(); // New line
+			
+			System.out.print("Would you like to convert another Roman numeral? "
+                       + " Enter y for yes or n for no: "); // Prompt for user choice
+			choice = console.next().charAt(0); // Get user choice
+		}
+	}
+}
+
+public class Roman 
+{
+	private String romanNum; // Roman numeral
+	private int decimalNum; // Decimal equivalent
+	
+        // Default constructor
+	public Roman()
+	{
+		romanNum = "I"; // Roman numeral gets "I"
+		decimalNum = 1; // Decimal gets "1"
+	}
+	
+        // Copy constructor
+	public Roman(String romString)
+	{
+		romanNum = romString; // Roman numeral gets passed-in string
+		romanToDecimal(); // Call method to get decimal equivalent
+	}
+	
+        // Print decimal equivalent
+	public void printDecimal()
+	{
+		System.out.print(decimalNum); // Print decimal
+	}
+	
+        // Print Roman numeral
+	public void printRoman()
+	{
+		System.out.print(romanNum); // Print Roman numeral
+	}
+	
+        // Set existing Roman object to passed-in string
+	public void setRoman(String romString)
+	{
+		romanNum = romString; // Roman numeral gets passed-in string
+		romanToDecimal(); // Call method to get decimal equivalent
+	}
+	
+        // Find decimal equivalent of Roman numeral
+	public void romanToDecimal()
+	{
+		int romLength = romanNum.length(); // Store length of Roman numeral string
+		int sum = 0; // Initialize sum
+		int previous = 1000; // Set previous to 1000 to initialize
+		int previous2 = 1000; // Set previous2 to 1000 to initialize
+		int i; // For loop
+
+		romanNum = romanNum.toUpperCase(); // Make Roman numeral uppercase
+
+                // For the length of Roman numeral
+		for (i = 0; i < romLength; i++)
+		{
+                        // Go to case matching current letter in Roman numeral
+			switch (romanNum.charAt(i))
+			{
+						case 'M': // M is 1000 in Roman numeral notation
+                                                        // If previous two Roman numerals were less than current numeral
+							if (previous < 1000 && previous2 < 1000)
+							{
+								System.out.println("invalid notation"); // Print error message
+								System.exit(0); // Exit program
+							}
+							sum += 1000; // Add Roman numeral value to sum
+                                                        // If previous character was less than current
+							if (previous < 1000)
+								sum -= 2 * previous; // Subtract numeral value once
+                                                                                              // for negative notation and once
+                                                                                              // again to cancel earlier addition
+							previous2 = previous; // previous2 gets previous
+							previous = 1000; // Current value becomes previous
+							break; // Break out of switch statement
+						case 'D': // D is 500 in Roman numeral notation
+                                                        // If previous two Roman numerals were less than current numeral
+							if (previous < 500 && previous2 < 500)
+							{
+								System.out.println("invalid notation"); // Print error message
+								System.exit(0); // Exit program
+							}
+							sum += 500; // Add Roman numeral value to sum
+                                                        // If previous character was less than current
+							if (previous < 500)
+								sum -= 2*previous; // Subtract numeral value once
+                                                                                              // for negative notation and once
+                                                                                              // again to cancel earlier addition
+							previous2 = previous; // previous2 gets previous
+							previous = 500; // Current value becomes previous
+							break; // Break out of switch statement
+						case 'C': // C is 100 in Roman numeral notation
+                                                        // If previous two Roman numerals were less than current numeral
+							if (previous < 100 && previous2 < 100)
+							{
+								System.out.println("invalid notation"); // Print error message
+								System.exit(0); // Exit program
+							}
+							sum += 100; // Add Roman numeral value to sum
+                                                        // If previous character was less than current
+							if (previous < 100)
+								sum -= 2*previous; // Subtract numeral value once
+                                                                                              // for negative notation and once
+                                                                                              // again to cancel earlier addition
+							previous2 = previous; // previous2 gets previous
+							previous = 100; // Current value becomes previous
+							break; // Break out of switch statement
+						case 'L': // L is 50 in Roman numeral notation
+                                                        // If previous two Roman numerals were less than current numeral
+							if (previous < 50 && previous2 < 50)
+							{
+								System.out.println("invalid notation"); // Print error message
+								System.exit(0); // Exit program
+							}
+							sum += 50; // Add Roman numeral value to sum
+                                                        // If previous character was less than current
+							if (previous < 50)
+								sum -= 2*previous; // Subtract numeral value once
+                                                                                              // for negative notation and once
+                                                                                              // again to cancel earlier addition
+							previous2 = previous; // previous2 gets previous
+							previous = 50; // Current value becomes previous
+							break; // Break out of switch statement
+						case 'X': // X is 10 in Roman numeral notation
+                                                        // If previous two Roman numerals were less than current numeral
+							if (previous < 10 && previous2 < 10)
+							{
+								System.out.println("invalid notation"); // Print error message
+								System.exit(0); // Exit program
+							}
+							sum += 10; // Add Roman numeral value to sum
+                                                        // If previous character was less than current
+							if (previous < 10)
+								sum -= 2*previous; // Subtract numeral value once
+                                                                                              // for negative notation and once
+                                                                                              // again to cancel earlier addition
+							previous2 = previous; // previous2 gets previous
+							previous = 10; // Current value becomes previous
+							break; // Break out of switch statement
+						case 'V': // V is 5 in Roman numeral notation
+                                                        // If previous two Roman numerals were less than current numeral
+							if (previous < 5 && previous2 < 5)
+							{
+								System.out.println("invalid notation"); // Print error message
+								System.exit(0); // Exit program
+							}
+							sum += 5; // Add Roman numeral value to sum
+                                                        // If previous character was less than current
+							if (previous < 5)
+								sum -= 2*previous; // Subtract numeral value once
+                                                                                              // for negative notation and once
+                                                                                              // again to cancel earlier addition
+							previous2 = previous; // previous2 gets previous
+							previous = 5; // Current value becomes previous
+							break; // Break out of switch statement
+						case 'I': // I is 1 in Roman numeral notation
+							sum += 1; // Add Roman numeral value to sum
+							previous2 = previous; // previous2 gets previous
+							previous = 1; // Current value becomes previous
+							break; // Break out of switch statement
+						default: // Character is not a Roman numeral
+							System.out.println("ILLEGAL char"); // Print error message
+							System.exit(0); // Exit program
+			}
+
+			decimalNum = sum; // Decimal equivalent gets sum
+		}
+	}
+}
+
