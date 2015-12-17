@@ -1,0 +1,279 @@
+// Kara Walla
+// 12/1/2015
+// This program has a basic Clock class with hours, minutes, and seconds,
+// which is extended by an ExtClock class with a time zone. It includes
+// a test driver in main.
+
+
+import java.util.Scanner; // Imports Scanner
+
+// Test driver for ExtCLock that instantiates several objects
+// and then tests each ExtClock method.
+public class Project9 
+{
+	static Scanner console = new Scanner(System.in); // Declare input stream
+	
+	// Instantiates objects and tests ExtClock methods
+	public static void main(String[] args)
+	{
+		ExtClock myExtClock = new ExtClock(); // Run default constructor
+		ExtClock yourExtClock = new ExtClock(9, 30, 22, 
+				"EST"); // Run general constructor
+		
+		// toString is tested in the following lines and throughout the program during
+		// output to screen
+		System.out.println("myExtClock after default "
+				+ "constructor: " + myExtClock); // Print myExtClock
+		System.out.println("yourExtClock after "
+				+ "general constructor: " + yourExtClock); // Print yourExtClock
+		
+		myExtClock.setZone("CST"); // Set myExtClock's zone to CST
+		
+		System.out.println("myExtClock's zone after "
+				+ "setting zone to CST: " + myExtClock.getZone()); // Print new zone
+		
+		// If the two ExtClocks are equal (testing equals method)
+		if (myExtClock.equals(yourExtClock))
+			System.out.println("myExtClock and yourExtClock "
+					+ "are equal."); // Print that they're equal
+		else // If the ExtClocks are not equal
+			System.out.println("myExtClock and yourExtClock "
+					+ "are not equal."); // Print that they're not equal
+		
+		myExtClock.makeCopy
+			(yourExtClock); // Copy yourExtClock data members to myExtClock
+		System.out.println("After making myExtClock a copy of yourExtClock, "
+				+ "myExtClock reads: " + myExtClock); // Print myExtClock
+		System.out.println("yourExtClock reads: " + yourExtClock); // Print yourExtClock
+		
+		// If the two ExtClocks are equal (testing equals method)
+		if (myExtClock.equals(yourExtClock))
+			System.out.println("myExtClock and yourExtClock "
+					+ "are equal."); // Print that they're equal
+		else // If the ExtClocks are not equal
+			System.out.println("myExtClock and yourExtClock "
+					+ "are not equal."); // Print that they're not equal
+			
+		System.out.println("A copy of myExtClock is " 
+				+ myExtClock.getCopy()); // Test getCopy and print to screen
+		
+	}
+
+}
+
+
+
+// super class that defines basic clock with hours, minutes, and seconds
+public class Clock
+{
+	private int hr;
+	private int min;
+	private int sec;
+
+	// default constructor to set components to 0
+	public Clock()
+	{
+		setTime(0,0,0); // set components to 0
+	}
+	
+	// general constructor
+	public Clock(int hours, int minutes, int seconds)
+	{
+		setTime(hours, minutes, seconds); // set components
+	}
+	
+	// copy constructor
+	public Clock(Clock otherClock)
+	{
+		// copy data members
+		setTime(otherClock.hr, otherClock.min, otherClock.sec);
+	}
+			
+	// set clock components to the input values
+	public void setTime(int hours, int minutes, int seconds)
+	{
+		if (0 <= hours && hours < 24)  // hours is in legal range
+			hr = hours;
+		else // invalid value so set to 0
+			hr = 0;
+		
+		if(0 <= minutes && minutes < 60)  // minutes is in legal range
+			min = minutes;
+		else  // illegal value so set to 0
+			min = 0;
+		
+		if(0 <= seconds && seconds < 60)  // seconds is in legal range
+			sec = seconds;
+		else  // illegal value so set to 0
+			sec = 0;
+	}
+	
+	// return hours
+	public int getHours()
+	{
+		return hr;
+	}
+
+
+	// return minutes
+	public int getMinutes()
+	{
+		return min;
+	}
+
+	// return seconds
+	public int getSeconds()
+	{
+		return sec;
+	}
+	
+	// convert time to a string
+	public String toString()
+	{
+		String str = "";
+		
+		if (hr < 10) // prefix hours with 0 if a single digit
+			str = "0";
+		str = str + hr + ":";
+
+		if (min < 10) // prefix minutes with 0 if a single digit
+			str = str + "0";
+		str = str + min + ":";
+
+		if (sec < 10) // prefix seconds with 0 if a single digit
+			str = str + "0";
+		str = str + sec;
+		
+		return str;
+	}
+
+	// increment the hours by 1
+	public void incrementHours()
+	{
+		hr++;
+		
+		// if 24, set back to 0
+		if(hr > 23)
+			hr = 0;
+	}
+
+	// increment the minutes by 1
+	public void incrementMinutes()
+	{
+		min++;
+		
+		// if 60, set back to 0 and increment hours
+		if(min > 59)
+		{
+			min = 0;
+			incrementHours();  // bump hours up by 1
+		}
+	}
+
+	// increment the seconds by 1
+	public void incrementSeconds()
+	{
+		sec++;
+		
+		// if 60, set back to 0 and increment minutes
+		if(sec > 59)
+		{
+			sec = 0;
+			incrementMinutes();  // bump minutes up by 1
+		}
+	}
+	
+	// compares clock times for equality
+	public boolean equals(Clock otherClock)
+	{
+		return (hr == otherClock.hr &&
+				min == otherClock.min &&
+				sec == otherClock.sec);
+	}
+	
+	// make a deep copy of the time
+	public void makeCopy(Clock otherClock)
+	{
+		hr = otherClock.hr;
+		min = otherClock.min;
+		sec = otherClock.sec;
+	}
+	
+	// get a copy of the time
+	public Clock getCopy()
+	{
+		Clock temp = new Clock();
+		
+		temp.hr = hr;
+		temp.min = min;
+		temp.sec = sec;
+		
+		return temp;		
+	}
+}
+
+// ExtClock inherits the properties of Clock but includes a time zone.
+// It overwrites some methods to account for the time zone.
+public class ExtClock extends Clock
+{
+	static String zoneArray[] = {"EST", "CST", "MST", "PST", 
+				"EDT", "CDT", "MDT", "PDT"};
+	private String zone; 
+	
+	// default constructor to set components to 0 or blank
+	public ExtClock ()
+	{
+		super.setTime(0, 0, 0); // set Clock members to 0
+		zone = "   ";
+	}
+	
+	// general constructor
+	public ExtClock (int hours, int minutes, int seconds, String tz)
+	{
+		super.setTime(hours, minutes, seconds); // set Clock members to 
+		zone = tz;
+	}
+	
+	// Set zone to passed-in string
+	public void setZone (String tz)
+	{
+		zone = tz;
+	}
+	
+	// Return zone data member
+	public String getZone ()
+	{
+		return zone;
+	}
+	
+	// compares times and zones for equality
+	public boolean equals (ExtClock otherClock)
+	{
+		return (super.equals(otherClock) &&
+				zone == otherClock.zone); // return equality of times and zones
+	}
+	
+	// make a deep copy of the time and zone
+	public void makeCopy (ExtClock otherClock)
+	{
+		super.makeCopy(otherClock); // make deep copy of Clock data members
+		zone = otherClock.zone; // make deep copy of zone
+	}
+	
+	// get a copy of the time and time zone
+	public Clock getCopy()
+	{
+		ExtClock temp = (ExtClock) super.getCopy(); // copy Clock data members
+		temp.zone = zone; // copy zone
+		
+		return temp;	
+	}	
+
+	// convert time to a string and concatenate zone
+	public String toString()
+	{
+		return super.toString() + " " 
+				+ zone; // call Clock's toString for converting time
+	}
+}
+
